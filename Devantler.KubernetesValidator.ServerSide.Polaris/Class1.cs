@@ -1,6 +1,9 @@
 ﻿namespace Devantler.KubernetesValidator.ServerSide.Polaris;
 
-public class Class1
+/// <summary>
+/// A class to run Polaris server-side validation.
+/// </summary>
+public class PolarisServerSideValidator
 {
 
 }

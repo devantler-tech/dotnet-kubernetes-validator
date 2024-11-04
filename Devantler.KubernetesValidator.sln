@@ -15,6 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.YamlSyntax", "Devantler.KubernetesValidator.ClientSide.YamlSyntax\Devantler.KubernetesValidator.ClientSide.YamlSyntax.csproj", "{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ServerSide.Polaris.Tests", "Devantler.KubernetesValidator.ServerSide.Polaris.Tests\Devantler.KubernetesValidator.ServerSide.Polaris.Tests.csproj", "{8D50CCFA-5F45-4CD9-B856-F6EB6C8B3782}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests", "Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests\Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests.csproj", "{D8EEAAF3-1EF8-4722-9E44-E6EFF19ECD12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.Schemas.Tests", "Devantler.KubernetesValidator.ClientSide.Schemas.Tests\Devantler.KubernetesValidator.ClientSide.Schemas.Tests.csproj", "{047F5730-B368-499E-AE8F-8493BBFFB25C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.Polaris.Tests", "Devantler.KubernetesValidator.ClientSide.Polaris.Tests\Devantler.KubernetesValidator.ClientSide.Polaris.Tests.csproj", "{BAD740DA-9144-4265-A91D-85DE14A76A7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +53,22 @@ Global
 		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D50CCFA-5F45-4CD9-B856-F6EB6C8B3782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D50CCFA-5F45-4CD9-B856-F6EB6C8B3782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D50CCFA-5F45-4CD9-B856-F6EB6C8B3782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D50CCFA-5F45-4CD9-B856-F6EB6C8B3782}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8EEAAF3-1EF8-4722-9E44-E6EFF19ECD12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8EEAAF3-1EF8-4722-9E44-E6EFF19ECD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8EEAAF3-1EF8-4722-9E44-E6EFF19ECD12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8EEAAF3-1EF8-4722-9E44-E6EFF19ECD12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{047F5730-B368-499E-AE8F-8493BBFFB25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{047F5730-B368-499E-AE8F-8493BBFFB25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{047F5730-B368-499E-AE8F-8493BBFFB25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{047F5730-B368-499E-AE8F-8493BBFFB25C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD740DA-9144-4265-A91D-85DE14A76A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD740DA-9144-4265-A91D-85DE14A76A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD740DA-9144-4265-A91D-85DE14A76A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD740DA-9144-4265-A91D-85DE14A76A7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

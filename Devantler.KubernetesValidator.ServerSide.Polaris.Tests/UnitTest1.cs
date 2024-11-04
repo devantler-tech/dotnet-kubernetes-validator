@@ -1,10 +1,16 @@
 namespace Devantler.KubernetesValidator.ServerSide.Polaris.Tests;
 
-public class UnitTest1
+/// <summary>
+/// Tests for the Polaris server-side validator.
+/// </summary>
+public class UnitTest
 {
-    [Fact]
-    public void Test1()
-    {
+  /// <summary>
+  /// Tests the Polaris server-side validator.
+  /// </summary>
+  [Fact]
+  public void Test1()
+  {
 
-    }
+  }
 }
