@@ -41,10 +41,6 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
         }
       }
     }
-    catch (ArgumentException e)
-    {
-      throw new YamlSyntaxValidatorException(e.Message);
-    }
     catch (DirectoryNotFoundException e)
     {
       throw new YamlSyntaxValidatorException(e.Message);
