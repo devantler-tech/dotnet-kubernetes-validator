@@ -1,21 +1,31 @@
-# .NET Template
+# 🐳 .NET Kubernetes Validator
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Test](https://github.com/devantler/dotnet-kubernetes-validator/actions/workflows/test.yaml/badge.svg)](https://github.com/devantler/dotnet-kubernetes-validator/actions/workflows/test.yaml)
+[![codecov](https://codecov.io/gh/devantler/dotnet-kubernetes-validator/graph/badge.svg?token=RhQPb4fE7z)](https://codecov.io/gh/devantler/dotnet-kubernetes-validator)
+
+Simple validators for client-side validation and server-side validation of Kubernetes resources.
 
 <details>
   <summary>Show/hide folder structure</summary>
 
 <!-- readme-tree start -->
+
 ```
 .
-└── .github
-    └── workflows
+├── .github
+│   └── workflows
+├── Devantler.ContainerEngineProvisioner.Core
+├── Devantler.ContainerEngineProvisioner.Docker
+└── Devantler.ContainerEngineProvisioner.Docker.Tests
+    └── DockerProvisionerTests
 
-2 directories
+6 directories
 ```
+
 <!-- readme-tree end -->
 
 </details>
-
-A simple .NET template for new projects.
 
 ## Prerequisites
 
@@ -23,46 +33,36 @@ A simple .NET template for new projects.
 
 ## 🚀 Getting Started
 
-To get started, you can install the package from NuGet.
+To get started, you can install the packages from NuGet.
 
 ```bash
-dotnet add package <package-name>
+dotnet add package Devantler.KubernetesValidator.ClientSide.YamlSyntax
+dotnet add package Devantler.KubernetesValidator.ClientSide.Schemas
+dotnet add package Devantler.KubernetesValidator.ClientSide.Polaris
+
+dotnet add package Devantler.KubernetesValidator.ServerSide.Polaris
 ```
 
-## 📝 Usage
+## Usage
 
-### Add a solution
+### Client-side validation
 
-```sh
-dotnet new sln --name <name-of-solution>
+To use the client-side validators, all you need to do is to create an instance of the validator and call the `Validate` method with the directory path to the resources you want to validate.
+
+```csharp
+using Devantler.KubernetesValidator.ClientSide.YamlSyntax;
+
+var validator = new YamlSyntaxValidator("path/to/resources");
+var isValid = validator.Validate();
 ```
 
-### Add a project
+### Server-side validation
 
-```sh
-dotnet new <project-type> --output folder1/folder2/<name-of-project>
-```
+To use the server-side validators, all you need to do is to create an instance of the validator and call the `Validate` method with the kubeconfig file path and the context name.
 
-### Add project to solution
+```csharp
+using Devantler.KubernetesValidator.ServerSide.Polaris;
 
-```sh
-dotnet sln add folder1/folder2/<name-of-project>
-```
-
-### Building your solution
-
-```sh
-dotnet build
-```
-
-### Running a project in your solution
-
-```sh
-dotnet run folder1/folder2/<name-of-project>
-```
-
-### Testing your solution
-
-```sh
-dotnet test
+var validator = new PolarisValidator("path/to/kubeconfig", "context-name");
+var isValid = validator.Validate();
 ```

@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.Polaris", "Devantler.KubernetesValidator.ClientSide.Polaris\Devantler.KubernetesValidator.ClientSide.Polaris.csproj", "{B8D97B9E-4189-4105-ABA6-D6DCC9F551BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ServerSide.Polaris", "Devantler.KubernetesValidator.ServerSide.Polaris\Devantler.KubernetesValidator.ServerSide.Polaris.csproj", "{420771BF-6D3E-4F62-BE6C-D211833B70C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ServerSide.Core", "Devantler.KubernetesValidator.ServerSide.Core\Devantler.KubernetesValidator.ServerSide.Core.csproj", "{E839B2D0-74C3-43CD-A06F-372342BA6C53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.Core", "Devantler.KubernetesValidator.ClientSide.Core\Devantler.KubernetesValidator.ClientSide.Core.csproj", "{E6F4A4B4-27B8-4E3C-9E4A-E2BACA541726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.Schemas", "Devantler.KubernetesValidator.ClientSide.Schemas\Devantler.KubernetesValidator.ClientSide.Schemas.csproj", "{17CDEDC8-0CEF-479A-BF0E-2B5518D5B01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devantler.KubernetesValidator.ClientSide.YamlSyntax", "Devantler.KubernetesValidator.ClientSide.YamlSyntax\Devantler.KubernetesValidator.ClientSide.YamlSyntax.csproj", "{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8D97B9E-4189-4105-ABA6-D6DCC9F551BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D97B9E-4189-4105-ABA6-D6DCC9F551BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D97B9E-4189-4105-ABA6-D6DCC9F551BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D97B9E-4189-4105-ABA6-D6DCC9F551BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420771BF-6D3E-4F62-BE6C-D211833B70C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420771BF-6D3E-4F62-BE6C-D211833B70C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420771BF-6D3E-4F62-BE6C-D211833B70C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420771BF-6D3E-4F62-BE6C-D211833B70C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E839B2D0-74C3-43CD-A06F-372342BA6C53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E839B2D0-74C3-43CD-A06F-372342BA6C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E839B2D0-74C3-43CD-A06F-372342BA6C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E839B2D0-74C3-43CD-A06F-372342BA6C53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F4A4B4-27B8-4E3C-9E4A-E2BACA541726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F4A4B4-27B8-4E3C-9E4A-E2BACA541726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F4A4B4-27B8-4E3C-9E4A-E2BACA541726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F4A4B4-27B8-4E3C-9E4A-E2BACA541726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17CDEDC8-0CEF-479A-BF0E-2B5518D5B01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17CDEDC8-0CEF-479A-BF0E-2B5518D5B01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17CDEDC8-0CEF-479A-BF0E-2B5518D5B01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17CDEDC8-0CEF-479A-BF0E-2B5518D5B01E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75AF2E80-31F6-495A-A4B2-9EAF2E425B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
