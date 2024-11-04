@@ -1,4 +1,4 @@
-# 🐳 .NET Kubernetes Validator
+# ✅ .NET Kubernetes Validator
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Test](https://github.com/devantler/dotnet-kubernetes-validator/actions/workflows/test.yaml/badge.svg)](https://github.com/devantler/dotnet-kubernetes-validator/actions/workflows/test.yaml)
