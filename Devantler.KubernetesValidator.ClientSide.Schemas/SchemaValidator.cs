@@ -32,11 +32,6 @@ public class SchemaValidator : IKubernetesClientSideValidator
     ];
     string[] kustomizeFlags = ["--load-restrictor=LoadRestrictionsNone"];
 
-    string clusterPath = $"{directoryPath}/clusters";
-    if (!Directory.Exists(clusterPath))
-    {
-      throw new SchemaValidatorException($"'{clusterPath}' directory does not exist");
-    }
     foreach (string file in Directory.GetFiles($"{directoryPath}/clusters", "*.yaml", SearchOption.AllDirectories))
     {
       try
