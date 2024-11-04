@@ -10,19 +10,55 @@ Simple validators for client-side validation and server-side validation of Kuber
   <summary>Show/hide folder structure</summary>
 
 <!-- readme-tree start -->
-
 ```
 .
 ├── .github
 │   └── workflows
-├── Devantler.ContainerEngineProvisioner.Core
-├── Devantler.ContainerEngineProvisioner.Docker
-└── Devantler.ContainerEngineProvisioner.Docker.Tests
-    └── DockerProvisionerTests
+├── Devantler.KubernetesValidator.ClientSide.Core
+├── Devantler.KubernetesValidator.ClientSide.Polaris
+├── Devantler.KubernetesValidator.ClientSide.Polaris.Tests
+├── Devantler.KubernetesValidator.ClientSide.Schemas
+├── Devantler.KubernetesValidator.ClientSide.Schemas.Tests
+│   ├── SchemaValidatorTests
+│   └── assets
+│       ├── k8s-invalid
+│       │   ├── apps
+│       │   ├── clusters
+│       │   │   └── ksail-default
+│       │   │       └── flux-system
+│       │   └── infrastructure
+│       │       └── controllers
+│       └── k8s-valid
+│           ├── apps
+│           ├── clusters
+│           │   └── ksail-default
+│           │       └── flux-system
+│           └── infrastructure
+│               └── controllers
+├── Devantler.KubernetesValidator.ClientSide.YamlSyntax
+├── Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests
+│   ├── YamlSyntaxValidatorTests
+│   └── assets
+│       ├── k8s-invalid
+│       │   ├── apps
+│       │   ├── clusters
+│       │   │   └── ksail-default
+│       │   │       └── flux-system
+│       │   └── infrastructure
+│       │       └── controllers
+│       └── k8s-valid
+│           ├── apps
+│           ├── clusters
+│           │   └── ksail-default
+│           │       └── flux-system
+│           └── infrastructure
+│               └── controllers
+├── Devantler.KubernetesValidator.ServerSide.Core
+├── Devantler.KubernetesValidator.ServerSide.Polaris
+└── Devantler.KubernetesValidator.ServerSide.Polaris.Tests
 
-6 directories
+44 directories
 ```
-
 <!-- readme-tree end -->
 
 </details>
