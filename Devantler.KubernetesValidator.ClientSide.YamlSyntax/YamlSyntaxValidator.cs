@@ -19,35 +19,24 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
   /// <exception cref="NotImplementedException"></exception>
   public Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
   {
-    try
+    foreach (string manifestPath in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
     {
-      foreach (string manifestPath in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
+      try
       {
-        try
-        {
-          var input = File.OpenText(manifestPath);
-          var parser = new Parser(input);
-          var deserializer = new Deserializer();
-          _ = parser.Consume<StreamStart>();
+        var input = File.OpenText(manifestPath);
+        var parser = new Parser(input);
+        var deserializer = new Deserializer();
+        _ = parser.Consume<StreamStart>();
 
-          while (parser.Accept<DocumentStart>(out var @event))
-          {
-            object? doc = deserializer.Deserialize(parser);
-          }
-        }
-        catch (YamlException e)
+        while (parser.Accept<DocumentStart>(out var @event))
         {
-          throw new YamlSyntaxValidatorException($"{manifestPath} - {e.Message}");
+          object? doc = deserializer.Deserialize(parser);
         }
       }
-    }
-    catch (ArgumentException e)
-    {
-      throw new YamlSyntaxValidatorException(e.Message);
-    }
-    catch (DirectoryNotFoundException e)
-    {
-      throw new YamlSyntaxValidatorException(e.Message);
+      catch (YamlException e)
+      {
+        throw new YamlSyntaxValidatorException($"{manifestPath} - {e.Message}");
+      }
     }
     return Task.FromResult(true);
   }
