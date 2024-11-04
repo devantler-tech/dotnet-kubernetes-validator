@@ -42,4 +42,24 @@ public class ValidateAsyncTests
     // Assert
     _ = await Assert.ThrowsAsync<YamlSyntaxValidatorException>(task);
   }
+
+  /// <summary>
+  /// Tests the ValidateAsync method with invalid directory path throws exception.
+  /// </summary>
+  /// <returns></returns>
+  [Fact]
+  public async Task ValidateAsync_WithInvalidDirectoryPath_ShouldThrowYamlSyntaxValidatorException()
+  {
+    // Arrange
+    var validator = new YamlSyntaxValidator();
+    string directoryPath = Path.Combine(AppContext.BaseDirectory, "assets/invalid");
+    var cancellationToken = new CancellationToken();
+
+    // Act
+    var task = new Func<Task>(() => validator.ValidateAsync(directoryPath, cancellationToken));
+
+    // Assert
+    var ex = await Assert.ThrowsAsync<YamlSyntaxValidatorException>(task);
+    Assert.Contains("Could not find a part of the path", ex.Message, StringComparison.OrdinalIgnoreCase);
+  }
 }
