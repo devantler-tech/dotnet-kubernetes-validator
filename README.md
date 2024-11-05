@@ -79,7 +79,7 @@ dotnet add package Devantler.KubernetesValidator.ClientSide.Polaris
 dotnet add package Devantler.KubernetesValidator.ServerSide.Polaris
 ```
 
-## Usage
+## 📝 Usage
 
 ### Client-side validation
 
