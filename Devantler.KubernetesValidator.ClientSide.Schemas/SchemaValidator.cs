@@ -32,15 +32,23 @@ public class SchemaValidator : IKubernetesClientSideValidator
     ];
     string[] kustomizeFlags = ["--load-restrictor=LoadRestrictionsNone"];
 
-    foreach (string file in Directory.GetFiles($"{directoryPath}/clusters", "*.yaml", SearchOption.AllDirectories))
+    string clustersDirectory = Path.Combine(directoryPath, "clusters");
+    if (!Directory.Exists(clustersDirectory))
     {
-      try
+      throw new SchemaValidatorException($"'{clustersDirectory}' directory does not exist");
+    }
+    else
+    {
+      foreach (string file in Directory.GetFiles(clustersDirectory, "*.yaml", SearchOption.AllDirectories))
       {
-        await Kubeconform.RunAsync(file, kubeconformFlags, kubeconformConfig, cancellationToken).ConfigureAwait(false);
-      }
-      catch (KubeconformException e)
-      {
-        throw new SchemaValidatorException(e.Message);
+        try
+        {
+          await Kubeconform.RunAsync(file, kubeconformFlags, kubeconformConfig, cancellationToken).ConfigureAwait(false);
+        }
+        catch (KubeconformException e)
+        {
+          throw new SchemaValidatorException(e.Message);
+        }
       }
     }
     const string Kustomization = "kustomization.yaml";
