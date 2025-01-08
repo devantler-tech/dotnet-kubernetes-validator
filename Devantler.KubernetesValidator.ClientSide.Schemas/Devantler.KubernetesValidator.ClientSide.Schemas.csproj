@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Devantler.KustomizeCLI" Version="1.0.6" />
-    <PackageReference Include="Devantler.KubeconformCLI" Version="1.0.7" />
+    <PackageReference Include="Devantler.KustomizeCLI" Version="1.1.0" />
+    <PackageReference Include="Devantler.KubeconformCLI" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -43,7 +43,13 @@ public class SchemaValidator : IKubernetesClientSideValidator
       {
         try
         {
-          await Kubeconform.RunAsync(file, kubeconformFlags, kubeconformConfig, cancellationToken).ConfigureAwait(false);
+          kubeconformFlags ??= [];
+          kubeconformConfig ??= ["-strict", "-ignore-missing-schemas", "-schema-location", "default", "-schema-location", "https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json", "-verbose"];
+          var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
+          var cmd = Kubeconform.Command.WithArguments(arguments);
+          var (exitCode, result) = await CLI.RunAsync(cmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+          if (exitCode != 0)
+            throw new KubeconformException($"{result}");
         }
         catch (KubeconformException e)
         {
