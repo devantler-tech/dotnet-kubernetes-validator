@@ -15,8 +15,6 @@ Simple validators for client-side validation and server-side validation of Kuber
 ├── .github
 │   └── workflows
 ├── Devantler.KubernetesValidator.ClientSide.Core
-├── Devantler.KubernetesValidator.ClientSide.Polaris
-├── Devantler.KubernetesValidator.ClientSide.Polaris.Tests
 ├── Devantler.KubernetesValidator.ClientSide.Schemas
 ├── Devantler.KubernetesValidator.ClientSide.Schemas.Tests
 │   ├── SchemaValidatorTests
@@ -53,11 +51,9 @@ Simple validators for client-side validation and server-side validation of Kuber
 │           │       └── flux-system
 │           └── infrastructure
 │               └── controllers
-├── Devantler.KubernetesValidator.ServerSide.Core
-├── Devantler.KubernetesValidator.ServerSide.Polaris
-└── Devantler.KubernetesValidator.ServerSide.Polaris.Tests
+└── Devantler.KubernetesValidator.ServerSide.Core
 
-45 directories
+41 directories
 ```
 <!-- readme-tree end -->
 
