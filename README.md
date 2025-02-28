@@ -14,46 +14,48 @@ Simple validators for client-side validation and server-side validation of Kuber
 .
 ├── .github
 │   └── workflows
-├── Devantler.KubernetesValidator.ClientSide.Core
-├── Devantler.KubernetesValidator.ClientSide.Schemas
-├── Devantler.KubernetesValidator.ClientSide.Schemas.Tests
-│   ├── SchemaValidatorTests
-│   └── assets
-│       ├── k8s-invalid
-│       │   ├── apps
-│       │   ├── clusters
-│       │   │   └── ksail-default
-│       │   │       └── flux-system
-│       │   └── infrastructure
-│       │       └── controllers
-│       └── k8s-valid
-│           ├── apps
-│           ├── clusters
-│           │   └── ksail-default
-│           │       └── flux-system
-│           └── infrastructure
-│               └── controllers
-├── Devantler.KubernetesValidator.ClientSide.YamlSyntax
-├── Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests
-│   ├── YamlSyntaxValidatorTests
-│   └── assets
-│       ├── k8s-invalid
-│       │   ├── apps
-│       │   ├── clusters
-│       │   │   └── ksail-default
-│       │   │       └── flux-system
-│       │   └── infrastructure
-│       │       └── controllers
-│       └── k8s-valid
-│           ├── apps
-│           ├── clusters
-│           │   └── ksail-default
-│           │       └── flux-system
-│           └── infrastructure
-│               └── controllers
-└── Devantler.KubernetesValidator.ServerSide.Core
+├── src
+│   ├── Devantler.KubernetesValidator.ClientSide.Core
+│   ├── Devantler.KubernetesValidator.ClientSide.Schemas
+│   ├── Devantler.KubernetesValidator.ClientSide.YamlSyntax
+│   └── Devantler.KubernetesValidator.ServerSide.Core
+└── tests
+    ├── Devantler.KubernetesValidator.ClientSide.Schemas.Tests
+    │   ├── SchemaValidatorTests
+    │   └── assets
+    │       ├── k8s-invalid
+    │       │   ├── apps
+    │       │   ├── clusters
+    │       │   │   └── ksail-default
+    │       │   │       └── flux-system
+    │       │   └── infrastructure
+    │       │       └── controllers
+    │       └── k8s-valid
+    │           ├── apps
+    │           ├── clusters
+    │           │   └── ksail-default
+    │           │       └── flux-system
+    │           └── infrastructure
+    │               └── controllers
+    └── Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests
+        ├── YamlSyntaxValidatorTests
+        └── assets
+            ├── k8s-invalid
+            │   ├── apps
+            │   ├── clusters
+            │   │   └── ksail-default
+            │   │       └── flux-system
+            │   └── infrastructure
+            │       └── controllers
+            └── k8s-valid
+                ├── apps
+                ├── clusters
+                │   └── ksail-default
+                │       └── flux-system
+                └── infrastructure
+                    └── controllers
 
-41 directories
+43 directories
 ```
 <!-- readme-tree end -->
 
