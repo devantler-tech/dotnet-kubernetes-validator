@@ -32,14 +32,13 @@ public class SchemaValidator : IKubernetesClientSideValidator
     ];
     string[] kustomizeFlags = ["--load-restrictor=LoadRestrictionsNone"];
 
-    string clustersDirectory = Path.Combine(directoryPath, "clusters");
-    if (!Directory.Exists(clustersDirectory))
+    if (!Directory.Exists(directoryPath))
     {
-      throw new SchemaValidatorException($"'{clustersDirectory}' directory does not exist");
+      throw new SchemaValidatorException($"'{directoryPath}' directory does not exist");
     }
     else
     {
-      foreach (string file in Directory.GetFiles(clustersDirectory, "*.yaml", SearchOption.AllDirectories))
+      foreach (string file in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
       {
 
         kubeconformFlags ??= [];
