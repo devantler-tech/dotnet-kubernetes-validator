@@ -20,9 +20,9 @@ public class SchemaValidator : IKubernetesClientSideValidator
   /// <exception cref="NotImplementedException"></exception>
   public async Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
   {
-    string[] kubeconformFlags = ["-ignore-filename-pattern=.*\\.sops\\.yaml"];
+    string[] ignoreFileNamePatterns = [];
+    string[] kubeconformFlags = [.. ignoreFileNamePatterns.Select(pattern => $"-ignore-filename-pattern={pattern}")];
     string[] kubeconformConfig = [
-      "-strict",
       "-ignore-missing-schemas",
       "-schema-location",
       "default",
@@ -40,9 +40,6 @@ public class SchemaValidator : IKubernetesClientSideValidator
     {
       foreach (string file in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
       {
-
-        kubeconformFlags ??= [];
-        kubeconformConfig ??= ["-strict", "-ignore-missing-schemas", "-schema-location", "default", "-schema-location", "https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json", "-verbose"];
         var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
         var cmd = Kubeconform.Command.WithArguments(arguments);
         var (exitCode, result) = await CLI.RunAsync(cmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -53,6 +50,12 @@ public class SchemaValidator : IKubernetesClientSideValidator
     const string Kustomization = "kustomization.yaml";
     foreach (string kustomization in Directory.GetFiles(directoryPath, Kustomization, SearchOption.AllDirectories))
     {
+      var contents = await File.ReadAllTextAsync(kustomization, cancellationToken).ConfigureAwait(false);
+      if (!(contents.Contains("apiVersion: kustomize.config.k8s.io/v1beta1", StringComparison.Ordinal) &&
+        contents.Contains("kind: Kustomization", StringComparison.Ordinal)))
+      {
+        continue;
+      }
       string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
       var stdOutBuffer = new StringBuilder();
       var stdErrBuffer = new StringBuilder();
