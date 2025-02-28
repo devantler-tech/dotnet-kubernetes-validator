@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Devantler.KubernetesValidator.ClientSide.Schemas/Devantler.KubernetesValidator.ClientSide.Schemas.csproj" />
+    <ProjectReference Include="../../src/Devantler.KubernetesValidator.ClientSide.Schemas/Devantler.KubernetesValidator.ClientSide.Schemas.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Devantler.KubernetesValidator.ClientSide.YamlSyntax/Devantler.KubernetesValidator.ClientSide.YamlSyntax.csproj" />
+    <ProjectReference Include="../../src/Devantler.KubernetesValidator.ClientSide.YamlSyntax/Devantler.KubernetesValidator.ClientSide.YamlSyntax.csproj" />
   </ItemGroup>
 
   <ItemGroup>
