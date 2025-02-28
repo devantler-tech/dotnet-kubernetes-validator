@@ -3,6 +3,7 @@ using CliWrap;
 using Devantler.CLIRunner;
 using Devantler.KubeconformCLI;
 using Devantler.KubernetesValidator.ClientSide.Core;
+using Devantler.KustomizeCLI;
 
 namespace Devantler.KubernetesValidator.ClientSide.Schemas;
 
@@ -20,7 +21,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
   /// <exception cref="NotImplementedException"></exception>
   public async Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
   {
-    string[] ignoreFileNamePatterns = [];
+    string[] ignoreFileNamePatterns = [@".+\.enc\.(yaml|yml)$"];
     string[] kubeconformFlags = [.. ignoreFileNamePatterns.Select(pattern => $"-ignore-filename-pattern={pattern}")];
     string[] kubeconformConfig = [
       "-ignore-missing-schemas",
@@ -59,7 +60,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
       string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
       var stdOutBuffer = new StringBuilder();
       var stdErrBuffer = new StringBuilder();
-      var kustomizeBuildCmd = KustomizeCLI.Kustomize.Command.WithArguments(["build", kustomizationPath, .. kustomizeFlags])
+      var kustomizeBuildCmd = Kustomize.Command.WithArguments(["build", kustomizationPath, .. kustomizeFlags])
         .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
         .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
       var kubeconformCmd = Kubeconform.Command.WithArguments([.. kubeconformFlags, .. kubeconformConfig])
