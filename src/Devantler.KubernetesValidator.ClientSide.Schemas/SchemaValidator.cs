@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using CliWrap;
 using CliWrap.Buffered;
-using Devantler.CLIRunner;
 using Devantler.KubeconformCLI;
 using Devantler.KubernetesValidator.ClientSide.Core;
 using Devantler.KustomizeCLI;
@@ -43,10 +42,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
       foreach (string file in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
       {
         var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
-        var cmd = Kubeconform.Command.WithArguments(arguments);
-        var (exitCode, result) = await CLI.RunAsync(cmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-        if (exitCode != 0)
-          throw new SchemaValidatorException(result);
+        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
       }
     }
     const string Kustomization = "kustomization.yaml";
@@ -69,11 +65,6 @@ public class SchemaValidator : IKubernetesClientSideValidator
         .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
       var command = kustomizeBuildCmd | kubeconformCmd;
       await command.ExecuteBufferedAsync(cancellationToken);
-      // var (exitCode, _) = await CLI.RunAsync(kustomizeBuildCmd | kubeconformCmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-      // if (exitCode != 0)
-      // {
-      //   throw new SchemaValidatorException($"'{kustomization}' - {stdErrBuffer}");
-      // }
     }
     return true;
   }

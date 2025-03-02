@@ -1,3 +1,5 @@
+using CliWrap.Exceptions;
+
 namespace Devantler.KubernetesValidator.ClientSide.Schemas.Tests.SchemaValidatorTests;
 
 /// <summary>
@@ -40,6 +42,6 @@ public class ValidateAsyncTests
     var task = new Func<Task>(() => validator.ValidateAsync(directoryPath, cancellationToken));
 
     // Assert
-    var ex = await Assert.ThrowsAsync<SchemaValidatorException>(task);
+    var ex = await Assert.ThrowsAsync<CommandExecutionException>(task);
   }
 }
