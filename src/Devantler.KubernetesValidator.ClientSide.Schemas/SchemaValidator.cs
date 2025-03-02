@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using CliWrap;
+using CliWrap.Buffered;
 using Devantler.CLIRunner;
 using Devantler.KubeconformCLI;
 using Devantler.KubernetesValidator.ClientSide.Core;
@@ -66,11 +67,13 @@ public class SchemaValidator : IKubernetesClientSideValidator
       var kubeconformCmd = Kubeconform.Command.WithArguments([.. kubeconformFlags, .. kubeconformConfig])
         .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
         .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
-      var (exitCode, _) = await CLI.RunAsync(kustomizeBuildCmd | kubeconformCmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-      if (exitCode != 0)
-      {
-        throw new SchemaValidatorException($"'{kustomization}' - {stdErrBuffer}");
-      }
+      var command = kustomizeBuildCmd | kubeconformCmd;
+      await command.ExecuteBufferedAsync(cancellationToken);
+      // var (exitCode, _) = await CLI.RunAsync(kustomizeBuildCmd | kubeconformCmd, silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+      // if (exitCode != 0)
+      // {
+      //   throw new SchemaValidatorException($"'{kustomization}' - {stdErrBuffer}");
+      // }
     }
     return true;
   }
