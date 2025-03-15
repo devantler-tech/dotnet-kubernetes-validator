@@ -18,10 +18,11 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    bool result = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
 
     // Assert
-    Assert.True(result);
+    Assert.True(isValid);
+    Assert.Empty(message);
   }
 
   /// <summary>
@@ -29,7 +30,7 @@ public class ValidateAsyncTests
   /// </summary>
   /// <returns></returns>
   [Fact]
-  public async Task ValidateAsync_WithInvalidYamlFiles_ShouldThrowYamlSyntaxValidatorException()
+  public async Task ValidateAsync_WithInvalidYamlFiles_ShouldReturnFalse()
   {
     // Arrange
     var validator = new YamlSyntaxValidator();
@@ -37,9 +38,10 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var task = new Func<Task>(() => validator.ValidateAsync(directoryPath, cancellationToken));
+    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
 
     // Assert
-    _ = await Assert.ThrowsAsync<YamlSyntaxValidatorException>(task);
+    Assert.False(isValid);
+    Assert.NotEmpty(message);
   }
 }

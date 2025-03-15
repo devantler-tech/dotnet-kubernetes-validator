@@ -17,27 +17,34 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="NotImplementedException"></exception>
-  public Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
+  public async Task<(bool, string)> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
   {
-    foreach (string manifestPath in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
+    try
     {
-      try
+      var manifestPaths = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories);
+      var validationTasks = manifestPaths.Select(manifestPath =>
       {
-        var input = File.OpenText(manifestPath);
+        cancellationToken.ThrowIfCancellationRequested();
+        using var input = File.OpenText(manifestPath);
         var parser = new Parser(input);
-        var deserializer = new Deserializer();
         _ = parser.Consume<StreamStart>();
-
+        var deserializer = new Deserializer();
         while (parser.Accept<DocumentStart>(out var @event))
         {
-          object? doc = deserializer.Deserialize(parser);
+          _ = deserializer.Deserialize(parser);
         }
-      }
-      catch (YamlException e)
-      {
-        throw new YamlSyntaxValidatorException($"{manifestPath} - {e.Message}");
-      }
+
+        return Task.CompletedTask;
+      });
+
+      await Task.WhenAll(validationTasks).ConfigureAwait(false);
+      return (true, string.Empty);
     }
-    return Task.FromResult(true);
+#pragma warning disable CA1031 // Do not catch general exception types
+    catch (Exception e)
+    {
+      return (false, $"{directoryPath} - {e.Message}");
+    }
+#pragma warning restore CA1031 // Do not catch general exception types
   }
 }
