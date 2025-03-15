@@ -20,7 +20,7 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.True(result);
@@ -40,10 +40,15 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.False(result);
-    Assert.NotEmpty(message);
+    Assert.Contains(
+      "clusters/ksail-default/flux-system/kustomization.yaml - Error: accumulating resources: accumulation err='accumulating resources from 'ddd': open " +
+      "/Users/nikolaiemildamm/git-personal/monorepo/libraries/dotnet-kubernetes-validator/tests/Devantler.KubernetesValidator.ClientSide.Schemas.Tests/bin/Debug/net9.0/osx-arm64/assets/k8s-invalid/clusters/ksail-default/flux-system/ddd: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on " +
+      "'/Users/nikolaiemildamm/git-personal/monorepo/libraries/dotnet-kubernetes-validator/tests/Devantler.KubernetesValidator.ClientSide.Schemas.Tests/bin/Debug/net9.0/osx-arm64/assets/k8s-invalid/clusters/ksail-default/flux-system/ddd' : lstat " +
+      "/Users/nikolaiemildamm/git-personal/monorepo/libraries/dotnet-kubernetes-validator/tests/Devantler.KubernetesValidator.ClientSide.Schemas.Tests/bin/Debug/net9.0/osx-arm64/assets/k8s-invalid/clusters/ksail-default/flux-system/ddd: no such file or directory\n",
+      message, StringComparison.OrdinalIgnoreCase);
   }
 }
