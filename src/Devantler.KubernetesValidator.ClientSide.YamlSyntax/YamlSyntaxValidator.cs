@@ -41,8 +41,7 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
 #pragma warning disable CA1031 // Do not catch general exception types
       catch (Exception ex)
       {
-        var relativePath = Path.GetRelativePath(directoryPath, manifestPath);
-        return (false, $"{relativePath} - {ex.Message}");
+        return (false, $"{manifestPath} - {ex.Message}");
       }
 #pragma warning restore CA1031 // Do not catch general exception types
 
