@@ -1,0 +1,17 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/Devantler.KubernetesValidator.ClientSide.Core/Devantler.KubernetesValidator.ClientSide.Core.csproj" />
+    <Project Path="src/Devantler.KubernetesValidator.ClientSide.Schemas/Devantler.KubernetesValidator.ClientSide.Schemas.csproj" />
+    <Project Path="src/Devantler.KubernetesValidator.ClientSide.YamlSyntax/Devantler.KubernetesValidator.ClientSide.YamlSyntax.csproj" />
+    <Project Path="src/Devantler.KubernetesValidator.ServerSide.Core/Devantler.KubernetesValidator.ServerSide.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Devantler.KubernetesValidator.ClientSide.Schemas.Tests/Devantler.KubernetesValidator.ClientSide.Schemas.Tests.csproj" />
+    <Project Path="tests/Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests/Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests.csproj" />
+  </Folder>
+</Solution>
