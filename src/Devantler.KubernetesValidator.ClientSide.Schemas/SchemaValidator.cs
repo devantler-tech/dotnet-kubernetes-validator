@@ -52,7 +52,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
       var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
       try
       {
-        await Kubeconform.RunAsync([.. arguments], silent: false, cancellationToken: cancellationToken).ConfigureAwait(false);
+        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
         return (true, string.Empty);
       }
 #pragma warning disable CA1031 // Do not catch general exception types
