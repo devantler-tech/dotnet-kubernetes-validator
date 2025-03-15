@@ -45,8 +45,8 @@ public class ValidateAsyncTests
     // Assert
     Assert.False(result);
     Assert.Contains(
-      $"clusters/ksail-default/flux-system/kustomization.yaml - Error: accumulating resources: accumulation err='accumulating resources from 'ddd': open " +
-      $"{Path.Combine(AppContext.BaseDirectory, "assets/k8s-invalid/clusters/ksail-default/flux-system/ddd")}: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on " +
+      $"clusters{Path.DirectorySeparatorChar}ksail-default{Path.DirectorySeparatorChar}flux-system{Path.DirectorySeparatorChar}kustomization.yaml - Error: accumulating resources: accumulation err='accumulating resources from 'ddd': open " +
+      $"{Path.Combine(AppContext.BaseDirectory, $"assets/k8s-invalid/clusters/ksail-default/flux-system/ddd")}: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on " +
       $"'{Path.Combine(AppContext.BaseDirectory, "assets/k8s-invalid/clusters/ksail-default/flux-system/ddd")}' : lstat " +
       $"{Path.Combine(AppContext.BaseDirectory, "assets/k8s-invalid/clusters/ksail-default/flux-system/ddd")}: no such file or directory\n",
       message, StringComparison.OrdinalIgnoreCase);
