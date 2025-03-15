@@ -88,15 +88,13 @@ public class SchemaValidator : IKubernetesClientSideValidator
         var result = await kustomizeCommand.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
         if (result.ExitCode != 0)
         {
-          var relativePath = Path.GetRelativePath(directoryPath, kustomizationPath);
-          return (false, $"{relativePath}{Kustomization} - {result.StandardOutput + result.StandardError}");
+          return (false, $"{Path.Combine(kustomizationPath, Kustomization)} - {result.StandardOutput + result.StandardError}");
         }
         var kubeconformCommand = result.StandardOutput | kubeconformCmd;
         result = await kubeconformCommand.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
         if (result.ExitCode != 0)
         {
-          var relativePath = Path.GetRelativePath(directoryPath, kustomizationPath);
-          return (false, $"{relativePath}{Kustomization} - {result.StandardOutput + result.StandardError}");
+          return (false, $"{Path.Combine(kustomizationPath, Kustomization)} - {result.StandardOutput + result.StandardError}");
         }
         return (true, string.Empty);
       });
