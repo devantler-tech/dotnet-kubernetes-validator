@@ -19,7 +19,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="NotImplementedException"></exception>
-  public async Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
+  public async Task<(bool, string)> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
   {
     string[] ignoreFileNamePatterns = [@".+\.enc\.(yaml|yml)$"];
     string[] kubeconformFlags = [.. ignoreFileNamePatterns.Select(pattern => $"-ignore-filename-pattern={pattern}")];
@@ -35,37 +35,71 @@ public class SchemaValidator : IKubernetesClientSideValidator
 
     if (!Directory.Exists(directoryPath))
     {
-      throw new SchemaValidatorException($"'{directoryPath}' directory does not exist");
+      return (false, $"Directory '{directoryPath}' does not exist");
     }
     else
     {
-      foreach (string file in Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories))
-      {
-        var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
-        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-      }
+      var (isValid, message) = await ValidateSchemas(directoryPath, kubeconformFlags, kubeconformConfig, cancellationToken).ConfigureAwait(false);
     }
-    const string Kustomization = "kustomization.yaml";
-    foreach (string kustomization in Directory.GetFiles(directoryPath, Kustomization, SearchOption.AllDirectories))
+    return await ValidateKustomizations(directoryPath, kubeconformFlags, kubeconformConfig, kustomizeFlags, cancellationToken).ConfigureAwait(false);
+  }
+
+  private static async Task<(bool, string)> ValidateSchemas(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, CancellationToken cancellationToken)
+  {
+    var validationTasks = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories).Select(async file =>
     {
-      var contents = await File.ReadAllTextAsync(kustomization, cancellationToken).ConfigureAwait(false);
-      if (!(contents.Contains("apiVersion: kustomize.config.k8s.io/v1beta1", StringComparison.Ordinal) &&
-        contents.Contains("kind: Kustomization", StringComparison.Ordinal)))
+      var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat(new[] { file });
+      try
       {
-        continue;
+        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return (true, string.Empty);
       }
-      string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
-      var stdOutBuffer = new StringBuilder();
-      var stdErrBuffer = new StringBuilder();
-      var kustomizeBuildCmd = Kustomize.Command.WithArguments(["build", kustomizationPath, .. kustomizeFlags])
-        .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch (Exception ex)
+      {
+        return (false, $"{file} - {ex.Message}");
+      }
+#pragma warning restore CA1031 // Do not catch general exception types
+    });
+    var results = await Task.WhenAll(validationTasks).ConfigureAwait(false);
+    return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
+  }
+
+  private static async Task<(bool, string)> ValidateKustomizations(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, string[] kustomizeFlags, CancellationToken cancellationToken)
+  {
+    const string Kustomization = "kustomization.yaml";
+    var kustomizationTasks = Directory.GetFiles(directoryPath, Kustomization, SearchOption.AllDirectories)
+      .Select(async kustomization =>
+      {
+        var contents = await File.ReadAllTextAsync(kustomization, cancellationToken).ConfigureAwait(false);
+        if (!(contents.Contains("apiVersion: kustomize.config.k8s.io/v1beta1", StringComparison.Ordinal) &&
+          contents.Contains("kind: Kustomization", StringComparison.Ordinal)))
+        {
+          return (true, string.Empty);
+        }
+        string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
+        var stdOutBuffer = new StringBuilder();
+        var stdErrBuffer = new StringBuilder();
+        var kustomizeBuildCmd = Kustomize.Command.WithArguments(new[] { "build", kustomizationPath }.Concat(kustomizeFlags))
+          .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
         .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
-      var kubeconformCmd = Kubeconform.Command.WithArguments([.. kubeconformFlags, .. kubeconformConfig])
-        .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+        var kubeconformCmd = Kubeconform.Command.WithArguments(kubeconformFlags.Concat(kubeconformConfig))
+          .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
         .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
-      var command = kustomizeBuildCmd | kubeconformCmd;
-      await command.ExecuteBufferedAsync(cancellationToken);
-    }
-    return true;
+        var command = kustomizeBuildCmd | kubeconformCmd;
+        try
+        {
+          await command.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
+          return (true, string.Empty);
+        }
+#pragma warning disable CA1031 // Do not catch general exception types
+        catch (Exception ex)
+        {
+          return (false, $"{kustomizationPath} - {ex.Message}");
+        }
+#pragma warning restore CA1031 // Do not catch general exception types
+      });
+    var results = await Task.WhenAll(kustomizationTasks).ConfigureAwait(false);
+    return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
   }
 }

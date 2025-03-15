@@ -11,5 +11,5 @@ public interface IKubernetesClientSideValidator
   /// <param name="directoryPath"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  Task<bool> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default);
+  Task<(bool, string)> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default);
 }
