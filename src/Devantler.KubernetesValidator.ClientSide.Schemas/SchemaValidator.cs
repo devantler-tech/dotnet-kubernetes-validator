@@ -16,13 +16,14 @@ public class SchemaValidator : IKubernetesClientSideValidator
   /// Validates that all YAML files in the specified directory conform to their upstream schemas.
   /// </summary>
   /// <param name="directoryPath"></param>
+  /// <param name="ignore"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="NotImplementedException"></exception>
-  public async Task<(bool, string)> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
+  public async Task<(bool, string)> ValidateAsync(string directoryPath, string[]? ignore = default, CancellationToken cancellationToken = default)
   {
-    string[] ignoreFileNamePatterns = [@".+\.enc\.(yaml|yml)$"];
-    string[] kubeconformFlags = [.. ignoreFileNamePatterns.Select(pattern => $"-ignore-filename-pattern={pattern}")];
+    ignore ??= [@".+\.enc\.(yaml|yml)$"];
+    string[] kubeconformFlags = [.. ignore.Select(pattern => $"-ignore-filename-pattern={pattern}")];
     string[] kubeconformConfig = [
       "-ignore-missing-schemas",
       "-schema-location",
@@ -35,7 +36,7 @@ public class SchemaValidator : IKubernetesClientSideValidator
 
     if (!Directory.Exists(directoryPath))
     {
-      return (false, $"Directory '{directoryPath}' does not exist");
+      return (false, $"directory '{directoryPath}' does not exist");
     }
     else
     {
@@ -48,10 +49,10 @@ public class SchemaValidator : IKubernetesClientSideValidator
   {
     var validationTasks = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories).Select(async file =>
     {
-      var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat(new[] { file });
+      var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
       try
       {
-        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+        await Kubeconform.RunAsync([.. arguments], silent: false, cancellationToken: cancellationToken).ConfigureAwait(false);
         return (true, string.Empty);
       }
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -78,26 +79,26 @@ public class SchemaValidator : IKubernetesClientSideValidator
           return (true, string.Empty);
         }
         string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
-        var stdOutBuffer = new StringBuilder();
-        var stdErrBuffer = new StringBuilder();
         var kustomizeBuildCmd = Kustomize.Command.WithArguments(new[] { "build", kustomizationPath }.Concat(kustomizeFlags))
-          .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
-        .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
+          .WithValidation(CommandResultValidation.None);
         var kubeconformCmd = Kubeconform.Command.WithArguments(kubeconformFlags.Concat(kubeconformConfig))
-          .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
-        .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer));
-        var command = kustomizeBuildCmd | kubeconformCmd;
-        try
+          .WithValidation(CommandResultValidation.None);
+        var kustomizeCommand = kustomizeBuildCmd;
+
+        var result = await kustomizeCommand.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
+        if (result.ExitCode != 0)
         {
-          await command.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
-          return (true, string.Empty);
+          var relativePath = Path.GetRelativePath(directoryPath, kustomizationPath);
+          return (false, $"{relativePath}{Kustomization} - {result.StandardOutput + result.StandardError}");
         }
-#pragma warning disable CA1031 // Do not catch general exception types
-        catch (Exception ex)
+        var kubeconformCommand = result.StandardOutput | kubeconformCmd;
+        result = await kubeconformCommand.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
+        if (result.ExitCode != 0)
         {
-          return (false, $"{kustomizationPath} - {ex.Message}");
+          var relativePath = Path.GetRelativePath(directoryPath, kustomizationPath);
+          return (false, $"{relativePath}{Kustomization} - {result.StandardOutput + result.StandardError}");
         }
-#pragma warning restore CA1031 // Do not catch general exception types
+        return (true, string.Empty);
       });
     var results = await Task.WhenAll(kustomizationTasks).ConfigureAwait(false);
     return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);

@@ -18,7 +18,7 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.True(isValid);
@@ -38,10 +38,10 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (isValid, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.False(isValid);
-    Assert.NotEmpty(message);
+    Assert.Contains($"apps{Path.DirectorySeparatorChar}kustomization.yaml - While parsing a node, did not find expected node content.", message, StringComparison.Ordinal);
   }
 }

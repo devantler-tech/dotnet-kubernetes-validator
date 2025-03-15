@@ -14,15 +14,19 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
   /// Validates the specified directory path.
   /// </summary>
   /// <param name="directoryPath"></param>
+  /// <param name="ignore"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="NotImplementedException"></exception>
-  public async Task<(bool, string)> ValidateAsync(string directoryPath, CancellationToken cancellationToken = default)
+  public async Task<(bool, string)> ValidateAsync(string directoryPath, string[]? ignore = default, CancellationToken cancellationToken = default)
   {
-    try
+    var manifestPaths = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories)
+      .Where(path => ignore == null || !ignore.Any(ignorePattern =>
+        path.Contains(ignorePattern, StringComparison.OrdinalIgnoreCase)))
+      .ToArray();
+    var validationTasks = manifestPaths.Select(async manifestPath => await Task.Run(() =>
     {
-      var manifestPaths = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories);
-      var validationTasks = manifestPaths.Select(manifestPath =>
+      try
       {
         cancellationToken.ThrowIfCancellationRequested();
         using var input = File.OpenText(manifestPath);
@@ -33,18 +37,20 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
         {
           _ = deserializer.Deserialize(parser);
         }
-
-        return Task.CompletedTask;
-      });
-
-      await Task.WhenAll(validationTasks).ConfigureAwait(false);
-      return (true, string.Empty);
-    }
+      }
 #pragma warning disable CA1031 // Do not catch general exception types
-    catch (Exception e)
-    {
-      return (false, $"{directoryPath} - {e.Message}");
-    }
+      catch (Exception ex)
+      {
+        var relativePath = Path.GetRelativePath(directoryPath, manifestPath);
+        return (false, $"{relativePath} - {ex.Message}");
+      }
 #pragma warning restore CA1031 // Do not catch general exception types
+
+      return (true, string.Empty);
+    }).ConfigureAwait(false));
+
+    var results = await Task.WhenAll(validationTasks).ConfigureAwait(false);
+    return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
+
   }
 }

@@ -20,7 +20,7 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.True(result);
@@ -40,10 +40,12 @@ public class ValidateAsyncTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken);
+    var (result, message) = await validator.ValidateAsync(directoryPath, cancellationToken: cancellationToken);
 
     // Assert
     Assert.False(result);
-    Assert.NotEmpty(message);
+    Assert.Contains(
+      $"clusters{Path.DirectorySeparatorChar}ksail-default{Path.DirectorySeparatorChar}flux-system{Path.DirectorySeparatorChar}kustomization.yaml - Error: accumulating resources: accumulation err='accumulating resources from 'ddd':",
+      message, StringComparison.OrdinalIgnoreCase);
   }
 }
