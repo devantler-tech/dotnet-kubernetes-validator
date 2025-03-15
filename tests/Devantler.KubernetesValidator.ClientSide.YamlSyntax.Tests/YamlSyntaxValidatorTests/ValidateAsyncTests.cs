@@ -42,6 +42,6 @@ public class ValidateAsyncTests
 
     // Assert
     Assert.False(isValid);
-    Assert.Contains("apps/kustomization.yaml - While parsing a node, did not find expected node content.", message, StringComparison.Ordinal);
+    Assert.Contains($"apps{Path.DirectorySeparatorChar}kustomization.yaml - While parsing a node, did not find expected node content.", message, StringComparison.Ordinal);
   }
 }
