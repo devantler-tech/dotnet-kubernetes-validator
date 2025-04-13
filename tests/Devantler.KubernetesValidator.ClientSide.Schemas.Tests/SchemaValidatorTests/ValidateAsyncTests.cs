@@ -1,5 +1,3 @@
-using CliWrap.Exceptions;
-
 namespace Devantler.KubernetesValidator.ClientSide.Schemas.Tests.SchemaValidatorTests;
 
 /// <summary>

@@ -20,10 +20,9 @@ public class YamlSyntaxValidator : IKubernetesClientSideValidator
   /// <exception cref="NotImplementedException"></exception>
   public async Task<(bool, string)> ValidateAsync(string directoryPath, string[]? ignore = default, CancellationToken cancellationToken = default)
   {
-    var manifestPaths = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories)
+    string[] manifestPaths = [.. Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories)
       .Where(path => ignore == null || !ignore.Any(ignorePattern =>
-        path.Contains(ignorePattern, StringComparison.OrdinalIgnoreCase)))
-      .ToArray();
+        path.Contains(ignorePattern, StringComparison.OrdinalIgnoreCase)))];
     var validationTasks = manifestPaths.Select(async manifestPath => await Task.Run(() =>
     {
       try

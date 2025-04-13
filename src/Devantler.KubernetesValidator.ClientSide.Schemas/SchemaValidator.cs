@@ -1,5 +1,4 @@
-﻿using System.Text;
-using CliWrap;
+﻿using CliWrap;
 using CliWrap.Buffered;
 using Devantler.KubeconformCLI;
 using Devantler.KubernetesValidator.ClientSide.Core;
@@ -45,14 +44,14 @@ public class SchemaValidator : IKubernetesClientSideValidator
     return await ValidateKustomizations(directoryPath, kubeconformFlags, kubeconformConfig, kustomizeFlags, cancellationToken).ConfigureAwait(false);
   }
 
-  private static async Task<(bool, string)> ValidateSchemas(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, CancellationToken cancellationToken)
+  static async Task<(bool, string)> ValidateSchemas(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, CancellationToken cancellationToken)
   {
     var validationTasks = Directory.GetFiles(directoryPath, "*.yaml", SearchOption.AllDirectories).Select(async file =>
     {
       var arguments = kubeconformFlags.Concat(kubeconformConfig).Concat([file]);
       try
       {
-        await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+        _ = await Kubeconform.RunAsync([.. arguments], silent: true, cancellationToken: cancellationToken).ConfigureAwait(false);
         return (true, string.Empty);
       }
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -66,13 +65,13 @@ public class SchemaValidator : IKubernetesClientSideValidator
     return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
   }
 
-  private static async Task<(bool, string)> ValidateKustomizations(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, string[] kustomizeFlags, CancellationToken cancellationToken)
+  static async Task<(bool, string)> ValidateKustomizations(string directoryPath, string[] kubeconformFlags, string[] kubeconformConfig, string[] kustomizeFlags, CancellationToken cancellationToken)
   {
     const string Kustomization = "kustomization.yaml";
     var kustomizationTasks = Directory.GetFiles(directoryPath, Kustomization, SearchOption.AllDirectories)
       .Select(async kustomization =>
       {
-        var contents = await File.ReadAllTextAsync(kustomization, cancellationToken).ConfigureAwait(false);
+        string contents = await File.ReadAllTextAsync(kustomization, cancellationToken).ConfigureAwait(false);
         if (!(contents.Contains("apiVersion: kustomize.config.k8s.io/v1beta1", StringComparison.Ordinal) &&
           contents.Contains("kind: Kustomization", StringComparison.Ordinal)))
         {
@@ -92,11 +91,9 @@ public class SchemaValidator : IKubernetesClientSideValidator
         }
         var kubeconformCommand = result.StandardOutput | kubeconformCmd;
         result = await kubeconformCommand.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
-        if (result.ExitCode != 0)
-        {
-          return (false, $"{Path.Combine(kustomizationPath, Kustomization)} - {result.StandardOutput + result.StandardError}");
-        }
-        return (true, string.Empty);
+        return result.ExitCode != 0
+            ? (false, $"{Path.Combine(kustomizationPath, Kustomization)} - {result.StandardOutput + result.StandardError}")
+            : (true, string.Empty);
       });
     var results = await Task.WhenAll(kustomizationTasks).ConfigureAwait(false);
     return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
