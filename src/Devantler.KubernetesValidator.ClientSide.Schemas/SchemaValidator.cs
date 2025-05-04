@@ -61,7 +61,8 @@ public class SchemaValidator : IKubernetesClientSideValidator
       }
 #pragma warning restore CA1031 // Do not catch general exception types
     });
-    var results = await Task.WhenAll(validationTasks).ConfigureAwait(false);
+    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+    var results = await Task.WhenAll(validationTasks.Select(task => task.ContinueWith(t => t.Result, cts.Token, TaskContinuationOptions.None, TaskScheduler.Default))).ConfigureAwait(false);
     return results.FirstOrDefault(result => !result.Item1) is (bool, string) invalidResult ? invalidResult : (true, string.Empty);
   }
 
