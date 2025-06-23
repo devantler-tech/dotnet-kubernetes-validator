@@ -1,4 +1,4 @@
-namespace Devantler.KubernetesValidator.ClientSide.Schemas.Tests.SchemaValidatorTests;
+namespace DevantlerTech.KubernetesValidator.ClientSide.Schemas.Tests.SchemaValidatorTests;
 
 /// <summary>
 /// Tests for the ValidateAsync method.

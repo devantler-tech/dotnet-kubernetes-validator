@@ -1,9 +1,9 @@
-﻿using Devantler.KubernetesValidator.ClientSide.Core;
+﻿using DevantlerTech.KubernetesValidator.ClientSide.Core;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace Devantler.KubernetesValidator.ClientSide.YamlSyntax;
+namespace DevantlerTech.KubernetesValidator.ClientSide.YamlSyntax;
 
 /// <summary>
 /// Validator for YAML syntax.

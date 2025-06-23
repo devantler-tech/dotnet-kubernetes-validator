@@ -1,4 +1,4 @@
-namespace Devantler.KubernetesValidator.ClientSide.Schemas;
+namespace DevantlerTech.KubernetesValidator.ClientSide.Schemas;
 
 /// <summary>
 /// Exception thrown when a schema validation error occurs.

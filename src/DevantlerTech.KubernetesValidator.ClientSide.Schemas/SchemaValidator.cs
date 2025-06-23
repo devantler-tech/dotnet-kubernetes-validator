@@ -1,10 +1,10 @@
 ﻿using CliWrap;
 using CliWrap.Buffered;
-using Devantler.KubeconformCLI;
-using Devantler.KubernetesValidator.ClientSide.Core;
-using Devantler.KustomizeCLI;
+using DevantlerTech.KubeconformCLI;
+using DevantlerTech.KubernetesValidator.ClientSide.Core;
+using DevantlerTech.KustomizeCLI;
 
-namespace Devantler.KubernetesValidator.ClientSide.Schemas;
+namespace DevantlerTech.KubernetesValidator.ClientSide.Schemas;
 
 /// <summary>
 /// Validator for Kubernetes schemas.
@@ -79,9 +79,9 @@ public class SchemaValidator : IKubernetesClientSideValidator
           return (true, string.Empty);
         }
         string kustomizationPath = kustomization.Replace(Kustomization, "", StringComparison.Ordinal);
-        var kustomizeBuildCmd = Kustomize.Command.WithArguments(new[] { "build", kustomizationPath }.Concat(kustomizeFlags))
+        var kustomizeBuildCmd = Kustomize.GetCommand().WithArguments(new[] { "build", kustomizationPath }.Concat(kustomizeFlags))
           .WithValidation(CommandResultValidation.None);
-        var kubeconformCmd = Kubeconform.Command.WithArguments(kubeconformFlags.Concat(kubeconformConfig))
+        var kubeconformCmd = Kubeconform.GetCommand().WithArguments(kubeconformFlags.Concat(kubeconformConfig))
           .WithValidation(CommandResultValidation.None);
         var kustomizeCommand = kustomizeBuildCmd;
 

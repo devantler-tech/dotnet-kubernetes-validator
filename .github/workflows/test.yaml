@@ -3,11 +3,32 @@ permissions:
   packages: read
 on:
   workflow_dispatch:
+  pull_request:
+  merge_group:
   push:
     branches:
       - main
 
 jobs:
   test:
-    uses: devantler-tech/workflows/.github/workflows/dotnet-test.yaml@main
-    secrets: inherit
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Install Kustomize CLI
+        uses: jaxxstorm/action-install-gh-release@v2.1.0
+        with:
+          repo: kubernetes-sigs/kustomize
+      - name: Install Kubeconform CLI
+        uses: jaxxstorm/action-install-gh-release@v2.1.0
+        with:
+          repo: yannh/kubeconform
+      - name: Test .NET solution or project
+        uses: devantler-tech/dotnet-test-action@main
+        with:
+          app_id: ${{ vars.APP_ID }}
+          app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
