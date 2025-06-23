@@ -15,11 +15,11 @@ Simple validators for client-side validation and server-side validation of Kuber
 To get started, you can install the packages from NuGet.
 
 ```bash
-dotnet add package Devantler.KubernetesValidator.ClientSide.YamlSyntax
-dotnet add package Devantler.KubernetesValidator.ClientSide.Schemas
-dotnet add package Devantler.KubernetesValidator.ClientSide.Polaris
+dotnet add package DevantlerTech.KubernetesValidator.ClientSide.YamlSyntax
+dotnet add package DevantlerTech.KubernetesValidator.ClientSide.Schemas
+dotnet add package DevantlerTech.KubernetesValidator.ClientSide.Polaris
 
-dotnet add package Devantler.KubernetesValidator.ServerSide.Polaris
+dotnet add package DevantlerTech.KubernetesValidator.ServerSide.Polaris
 ```
 
 ## 📝 Usage
@@ -29,7 +29,7 @@ dotnet add package Devantler.KubernetesValidator.ServerSide.Polaris
 To use the client-side validators, all you need to do is to create an instance of the validator and call the `Validate` method with the directory path to the resources you want to validate.
 
 ```csharp
-using Devantler.KubernetesValidator.ClientSide.YamlSyntax;
+using DevantlerTech.KubernetesValidator.ClientSide.YamlSyntax;
 
 var validator = new YamlSyntaxValidator("path/to/resources");
 var isValid = validator.Validate();
@@ -40,7 +40,7 @@ var isValid = validator.Validate();
 To use the server-side validators, all you need to do is to create an instance of the validator and call the `Validate` method with the kubeconfig file path and the context name.
 
 ```csharp
-using Devantler.KubernetesValidator.ServerSide.Polaris;
+using DevantlerTech.KubernetesValidator.ServerSide.Polaris;
 
 var validator = new PolarisValidator("path/to/kubeconfig", "context-name");
 var isValid = validator.Validate();

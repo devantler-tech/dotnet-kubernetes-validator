@@ -1,9 +1,9 @@
-namespace Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests;
+namespace DevantlerTech.KubernetesValidator.ClientSide.Schemas.Tests;
 
 /// <summary>
-/// Tests for the <see cref="YamlSyntaxValidatorException"/> class.
+/// Tests for the <see cref="SchemaValidatorException"/> class.
 /// </summary>
-public class YamlSyntaxValidatorExceptionTests
+public class SchemaValidatorExceptionTests
 {
   /// <summary>
   /// Tests the default constructor.
@@ -12,7 +12,7 @@ public class YamlSyntaxValidatorExceptionTests
   public void Constructor_GivenNothing_CallsDefaultConstructor()
   {
     // Act
-    var exception = new YamlSyntaxValidatorException();
+    var exception = new SchemaValidatorException();
 
     // Assert
     Assert.NotNull(exception);
@@ -28,7 +28,7 @@ public class YamlSyntaxValidatorExceptionTests
     string message = "Test message";
 
     // Act
-    var exception = new YamlSyntaxValidatorException(message);
+    var exception = new SchemaValidatorException(message);
 
     // Assert
     Assert.Equal(message, exception.Message);
@@ -45,7 +45,7 @@ public class YamlSyntaxValidatorExceptionTests
     var innerException = new NotImplementedException();
 
     // Act
-    var exception = new YamlSyntaxValidatorException(message, innerException);
+    var exception = new SchemaValidatorException(message, innerException);
 
     // Assert
     Assert.Equal(message, exception.Message);

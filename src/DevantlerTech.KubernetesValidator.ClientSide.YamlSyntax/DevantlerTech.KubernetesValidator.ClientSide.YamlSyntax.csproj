@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Devantler.KubernetesValidator.ClientSide.Core\Devantler.KubernetesValidator.ClientSide.Core.csproj" />
+    <ProjectReference Include="..\DevantlerTech.KubernetesValidator.ClientSide.Core\DevantlerTech.KubernetesValidator.ClientSide.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace Devantler.KubernetesValidator.ClientSide.YamlSyntax.Tests.YamlSyntaxValidatorTests;
+namespace DevantlerTech.KubernetesValidator.ClientSide.YamlSyntax.Tests.YamlSyntaxValidatorTests;
 
 /// <summary>
 /// Tests for the ValidateAsync method.

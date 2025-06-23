@@ -1,4 +1,4 @@
-namespace Devantler.KubernetesValidator.ClientSide.YamlSyntax;
+namespace DevantlerTech.KubernetesValidator.ClientSide.YamlSyntax;
 
 /// <summary>
 /// Represents an exception that is thrown when a YAML syntax validation error occurs.

@@ -1,4 +1,4 @@
-﻿namespace Devantler.KubernetesValidator.ClientSide.Core;
+﻿namespace DevantlerTech.KubernetesValidator.ClientSide.Core;
 
 /// <summary>
 /// Interface for a Kubernetes client-side validator.
