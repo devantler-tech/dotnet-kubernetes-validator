@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="DevantlerTech.KustomizeCLI" Version="1.4.2" />
-    <PackageReference Include="DevantlerTech.KubeconformCLI" Version="1.7.1" />
+    <PackageReference Include="DevantlerTech.KubeconformCLI" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>
