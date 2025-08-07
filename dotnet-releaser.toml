@@ -1,0 +1,6 @@
+# configuration file for dotnet-releaser
+[msbuild]
+project = "DevantlerTech.KubernetesValidator.slnx"
+[github]
+user = "devantler-tech"
+repo = "dotnet-kubernetes-validator"
